@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Page chrome: the header, footer and hero sit directly on the ink
+     background, so --fg/--mist are the readable text pair for that surface
+     and flip with the Appearance toggle below. */
+  --ink: #130f1d;
+  --fg: #f8f4ea;
+  --mist: #a89dc9;
+  --hairline: rgba(255, 255, 255, 0.1);
+
+  /* Glass card: the generator and the blog promo float on the page as a
+     translucent panel (the look this is styled after), so its surface and
+     text are their own theme-aware pair, independent of the page chrome. */
+  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-border: rgba(255, 255, 255, 0.14);
+  --card-fg: #f8f4ea;
+  --card-fg-muted: #a89dc9;
+
+  /* Document card: Terms/Privacy/Refund/etc. read as a fixed light page
+     regardless of theme, so these stay constant on purpose. */
+  --paper: #f8f4ea;
+  --paper-2: #eee6d3;
+  --graphite: #3f3750;
+
+  --accent: #e0409a;
+  --gold: #c9a227;
+}
+
+:root[data-theme="light"] {
+  --ink: #e7ded0;
+  --fg: #2b2438;
+  --mist: #6f6584;
+  --hairline: rgba(0, 0, 0, 0.1);
+
+  --card-bg: rgba(255, 255, 255, 0.55);
+  --card-border: rgba(0, 0, 0, 0.1);
+  --card-fg: #2b2438;
+  --card-fg-muted: #6f6584;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ink: var(--ink);
+  --color-fg: var(--fg);
+  --color-mist: var(--mist);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-graphite: var(--graphite);
+  --color-accent: var(--accent);
+  --color-gold: var(--gold);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Background/text color come from the bg-ink/text-fg utility classes on
+     <body> in layout.tsx, not redeclared here, to avoid a shorthand
+     `background` vs. longhand `background-color` cascade conflict. */
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}
+
+@keyframes specimen-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
